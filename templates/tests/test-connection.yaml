@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "clusterapihelm.fullname" . }}-test-connection"
+  labels:
+    {{- include "clusterapihelm.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "clusterapihelm.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never
